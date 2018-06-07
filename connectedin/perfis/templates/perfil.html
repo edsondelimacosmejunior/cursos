@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>ConnectedIn</title>
+</head>
+<body>
+    <h1>Detalhe Perfil</h1>
+    <p>
+        Nome: {{perfil.nome}},
+        Empresa: {{perfil.empresa}}
+    </p>
+    <a href="{% url 'convidar' perfil.id %}">Convidar</a>
+</body>
+</html>
