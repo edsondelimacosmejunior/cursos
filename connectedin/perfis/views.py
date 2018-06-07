@@ -6,7 +6,7 @@ from perfis.models import Perfil
 
 def index(request):
     perfis = Perfil.objects.all()
-    return render(request, 'index.html', {'perfis': perfis})
+    return render(request, 'index.html', {'perfis': perfis, 'perfil_logado': get_perfil_logado(request)})
 
 def exibir(request, perfil_id):
     perfil = Perfil.objects.get(id=perfil_id)
