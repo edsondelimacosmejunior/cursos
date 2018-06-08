@@ -4,7 +4,11 @@
     <div class="col-lg-12">
         <h2>{{perfil.nome}}</h2>
         <address>{{perfil.empresa}}</address>
-        <a href="{% url 'convidar' perfil.id %}">Convidar</a>
+        {% if not ja_eh_contato %}
+            <a href="{% url 'convidar' perfil.id %}">Convidar</a>
+        {% else %}
+            <div class="well well-sm">Vocês já são amigos =)</div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

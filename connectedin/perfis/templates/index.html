@@ -20,6 +20,27 @@
     </div>
 
     <div class="panel panel-default">
+        {% with total_contatos=perfil_logado.contatos.count %}
+            {% if total_contatos > 0 %}
+                <div class="panel-heading">
+                    <strong>Você tem {{ total_contatos }} contato{{ total_contatos |pluralize }}</strong>
+                </div>
+                <ul class="list-group">
+                    {% for contato in perfil_logado.contatos.all %}
+                        <li class="list-group-item">
+                            <a href="{% url 'exibir' contato.id %}">{{contato.nome}}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <div class="panel-body">
+                    <p>Nenhum contato ainda! =(</p>
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="panel panel-default">
         {% with total_convites=perfil_logado.convites_recebidos.count %}
             {% if total_convites > 0 %}
                 <div class="panel-heading">
@@ -29,7 +50,7 @@
                     {% for convite in perfil_logado.convites_recebidos.all %}
                         <li class="list-group-item">
                             {{convite.solicitante.nome}}
-                            <a href="#" class="pull-right">aceitar</a>
+                            <a href="{% url 'aceitar' convite.id %}" class="pull-right">aceitar</a>
                         </li>
                     {% endfor %}
                 </ul>

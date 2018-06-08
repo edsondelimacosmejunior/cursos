@@ -2,17 +2,24 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render, redirect
-from perfis.models import Perfil
+from perfis.models import Perfil, Convite
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def index(request):
     perfis = Perfil.objects.all()
     return render(request, 'index.html', {'perfis': perfis, 'perfil_logado': get_perfil_logado(request)})
 
+@login_required
 def exibir(request, perfil_id):
+    perfil_logado = get_perfil_logado(request)
     perfil = Perfil.objects.get(id=perfil_id)
 
-    return render(request, 'perfil.html', {'perfil': perfil})
+    ja_eh_contato = perfil in perfil_logado.contatos.all()
 
+    return render(request, 'perfil.html', {'perfil': perfil, 'ja_eh_contato': ja_eh_contato})
+
+@login_required
 def convidar(request, perfil_id):
     perfil_a_convidar = Perfil.objects.get(id=perfil_id)
     perfil_logado = Perfil.objects.get(id=1)
@@ -21,5 +28,13 @@ def convidar(request, perfil_id):
 
     return redirect('index')
 
+@login_required
 def get_perfil_logado(request):
-    return Perfil.objects.get(id=1)
+    return request.user.perfil
+
+@login_required
+def aceitar(request, convite_id):
+    convite = Convite.objects.get(id=convite_id)
+    convite.aceitar()
+
+    return redirect('index')
